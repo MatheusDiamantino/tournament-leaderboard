@@ -1954,6 +1954,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-x: hidden;
 }
 
 #root {
@@ -2122,5 +2123,97 @@ code {
     font-size: 10px !important;
     padding: 3px 6px !important;
     border-radius: 8px !important;
+  }
+}
+
+/* Desktop scale adjustments */
+:root {
+  /* Proporção reduzida para desktop */
+  --desktop-scale: 0.6;
+}
+
+@media (min-width: 1024px) {
+  .leaderboard-container {
+    /* Reduce overall scale on desktop */
+    zoom: var(--desktop-scale);
+    transform: scale(var(--desktop-scale));
+    transform-origin: top center;
+    width: calc(100% / var(--desktop-scale));
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Tighter paddings and font sizes for desktop */
+  .tournament-header {
+    padding: 12px 0;
+  }
+
+  .tournament-header h1 {
+    font-size: 18px;
+  }
+
+  .points-display {
+    padding: 16px 18px;
+  }
+
+  .prize-info {
+    padding: 12px;
+  }
+
+  .prize-name {
+    font-size: 13px;
+  }
+
+  .prize-percentage {
+    font-size: 16px;
+  }
+
+  .jackpot-stats {
+    padding: 16px;
+  }
+
+  .stats-horizontal-layout {
+    gap: 16px;
+  }
+
+  .points-value {
+    font-size: 24px;
+  }
+
+  .progress-bar-container {
+    height: 10px;
+  }
+
+  .all-prizes-section {
+    margin-top: 18px;
+  }
+
+  .prizes-title {
+    font-size: 18px;
+  }
+}
+
+/* Proporção fixa para cenário 904x1064 */
+@media screen and (min-width: 900px) {
+  .leaderboard-container {
+    zoom: 1;
+    transform: none;
+    transform-origin: initial;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .tournament-header h1 {
+    font-size: 18px;
+  }
+
+  .points-value {
+    font-size: 22px;
+  }
+
+  .prize-name {
+    font-size: 13px;
   }
 }

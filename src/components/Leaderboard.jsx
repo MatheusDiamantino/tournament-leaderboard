@@ -2,8 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSmartico } from "../hooks/useSmartico";
 import { LeaderboardWidget } from "./SmarticoWidget";
 import SmarticoLeaderboardWidget from "./SmarticoLeaderboardWidget";
+import { TOURNAMENT_ID, TOURNAMENT_INSTANCE_ID, LEADERBOARD_ENDPOINTS } from "../config/tournament";
 
-const Leaderboard = ({ tournamentId = 1994, instanceId = "REMOVIDO" }) => {
+const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAMENT_INSTANCE_ID) }) => {
   const { api, isReady, error } = useSmartico();
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [useWidget, setUseWidget] = useState(false);
@@ -109,11 +110,8 @@ const Leaderboard = ({ tournamentId = 1994, instanceId = "REMOVIDO" }) => {
               `api_key=${apiKey}&label=${apiKey}`
             ];
             
-            // Endpoints principais
-            const endpoints = [
-              `/tournament/1994/leaderboard`,
-              `/tournament/instance/REMOVIDO/leaderboard`
-            ];
+            // Endpoints principais centralizados
+            const endpoints = LEADERBOARD_ENDPOINTS;
             
             for (const endpoint of endpoints) {
               for (const labelFormat of labelFormats) {
@@ -166,7 +164,7 @@ const Leaderboard = ({ tournamentId = 1994, instanceId = "REMOVIDO" }) => {
         // API oficial do Smartico SDK
         if (api && api.api && window._smartico && window._smartico.api) {
           try {
-            const result = await window._smartico.api.getTournamentInstanceInfo("REMOVIDO");
+            const result = await window._smartico.api.getTournamentInstanceInfo(String(TOURNAMENT_INSTANCE_ID));
             
             if (result && (result.players || result.leaderboard || Array.isArray(result))) {
               let players = [];
