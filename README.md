@@ -1,33 +1,69 @@
-# React + Vite
+# Tournament Leaderboard Widget (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Widget de leaderboard de torneio com integração opcional ao Smartico SDK.
 
-Currently, two official plugins are available:
+## Como rodar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-## Configuração de IDs de Torneio
-
-Para evitar repetir o mesmo ID em vários lugares, os IDs do torneio foram centralizados em `src/config/tournament.js`.
-
-- `TOURNAMENT_ID`: ID do torneio
-- `TOURNAMENT_INSTANCE_ID`: ID da instância do torneio
-- `LEADERBOARD_ENDPOINTS`: endpoints construídos automaticamente com os IDs acima
-
-Se precisar alterar os IDs, edite apenas este arquivo:
-
-```
-// src/config/tournament.js
-export const TOURNAMENT_ID = 1994;
-export const TOURNAMENT_INSTANCE_ID = REMOVIDO;
+```bash
+npm install
+npm run dev
 ```
 
-Os componentes (como `Leaderboard.jsx`) passam a importar esses valores para construir URLs e chamar o SDK do Smartico sem hardcode.
+## Build
+
+```bash
+npm run lint
+npm run build
+```
+
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env` e preencha os valores necessários.
+
+Obrigatórias para carregar o Smartico SDK:
+
+- `VITE_SMARTICO_PROJECT_KEY`
+- `VITE_SMARTICO_BRAND_KEY`
+
+Opcional (identificação de usuário):
+
+- `VITE_SMARTICO_USER_ID`
+- `VITE_SMARTICO_USER_HASH`
+- `VITE_SMARTICO_USE_DEMO_USER` (`true`/`false`)
+- `VITE_SMARTICO_DEMO_USER_ID`
+
+IDs do torneio:
+
+- `VITE_TOURNAMENT_ID`
+- `VITE_TOURNAMENT_INSTANCE_ID`
+
+Deep links (atualizados em runtime):
+
+- `VITE_SMARTICO_DP_TOURNAMENT_ID`
+- `VITE_SMARTICO_DP_MISSIONS_ID`
+- `VITE_SMARTICO_DP_DAILY_GIFT_ID`
+
+## Como funciona (Smartico)
+
+- O HTML não contém credenciais.
+- O bootstrap fica em `src/main.jsx` e carrega `https://libs.smartico.ai/smartico.js` somente quando as envs obrigatórias estão configuradas.
+- Quando o Smartico fica pronto, o app emite `smartico:ready` (consumido pelo hook `src/hooks/useSmartico.js`).
+- Se não houver env configurada, o app emite `smartico:disabled` e o layout continua renderizando normalmente.
+
+## Deep links
+
+No `index.html` existem anchors “neutros” (com `id=0`) e invisíveis:
+
+- `#smartico-tournaments-link`
+- `#smartico-missions-link`
+- `#smartico-daily-gift-link`
+
+Em runtime, `src/main.jsx` atualiza o `href` desses anchors com os IDs vindos do `.env`.
+
+## Estrutura
+
+- `index.html`: shell do Vite (sem credenciais)
+- `src/main.jsx`: bootstrap do Smartico + render do React
+- `src/hooks/useSmartico.js`: estado reativo do Smartico (`ready/disabled/error`)
+- `src/config/tournament.js`: IDs do torneio via env
+- `src/components/Leaderboard.jsx`: UI do leaderboard e fallback
