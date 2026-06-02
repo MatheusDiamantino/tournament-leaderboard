@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSmartico } from "../hooks/useSmartico";
-import { LeaderboardWidget } from "./SmarticoWidget";
 import SmarticoLeaderboardWidget from "./SmarticoLeaderboardWidget";
 import { TOURNAMENT_ID, TOURNAMENT_INSTANCE_ID, LEADERBOARD_ENDPOINTS } from "../config/tournament";
 
 const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAMENT_INSTANCE_ID) }) => {
-  const { api, isReady, error } = useSmartico();
+  const { api, isReady, error, status } = useSmartico();
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [useWidget, setUseWidget] = useState(false);
   const [apiError, setApiError] = useState(null);
@@ -151,20 +150,20 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                       return;
                     }
                   }
-                } catch (error) {
+                } catch {
                   // API não disponível
                 }
               }
             }
-          } catch (error) {
+          } catch {
             // API não disponível
           }
         }
         
         // API oficial do Smartico SDK
-        if (api && api.api && window._smartico && window._smartico.api) {
+        if (window._smartico?.api) {
           try {
-            const result = await window._smartico.api.getTournamentInstanceInfo(String(TOURNAMENT_INSTANCE_ID));
+            const result = await window._smartico.api.getTournamentInstanceInfo(String(instanceId));
             
             if (result && (result.players || result.leaderboard || Array.isArray(result))) {
               let players = [];
@@ -184,7 +183,7 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                 return;
               }
             }
-          } catch (error) {
+          } catch {
             // API não disponível
           }
         }
@@ -212,28 +211,8 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
     return () => clearInterval(interval);
   }, [isReady, api, instanceId]);
 
-  if (!isReady) {
-    return (
-      <div className="leaderboard-loading">
-        <p>Carregando Smartico...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="leaderboard-error">
-        <p>Erro no Smartico: {error.message}</p>
-        <LeaderboardWidget 
-          instanceId={instanceId}
-          tournamentId={tournamentId}
-        />
-      </div>
-    );
-  }
-
   // Se deve usar o widget (API falhou ou não disponível)
-  if (useWidget) {
+  if (useWidget && status !== 'disabled') {
     return (
       <div className="leaderboard-container">
         <div className="tournament-header">
@@ -277,12 +256,15 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
   };
 
   const themeLevel = getThemeLevel();
+  const isLoading = status === 'loading' || (isReady && loading);
 
   return (
     <div className={`leaderboard-container theme-level-${themeLevel}`}>
       <div className="tournament-header">
         <h1>🎰 JACKPOT REALS 🎰</h1>
-  
+        {status === 'disabled' && <p>Smartico não configurado (.env)</p>}
+        {status === 'error' && <p>Smartico com erro: {error?.message || 'erro desconhecido'}</p>}
+        {isLoading && status !== 'disabled' && <p>Carregando dados...</p>}
       </div>
 
       {/* Estatísticas dos Prêmios */}
@@ -406,11 +388,59 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
           else if (position <= 10) borderColor = "#8B5CF6"; // Top 10
 
           return (
-          <></>
+            <div
+              key={`${player.public_username || 'player'}-${position}`}
+              className={`player-card ${isCurrentUser ? 'current-user' : ''}`}
+              style={{ border: `2px solid ${borderColor}` }}
+            >
+              <div className="player-position">
+                <div className="position-number">#{position}</div>
+                <div className="position-medal">
+                  {position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : ''}
+                </div>
+              </div>
+
+              <div className="player-info">
+                <div className="player-name">
+                  {player.public_username || player.username || player.name || `Player ${position}`}
+                  {isCurrentUser && <span className="you-badge">Você</span>}
+                </div>
+                <div className="player-details">
+                  <div className="player-score">
+                    {(player.scores ?? player.score ?? player.points ?? 0).toLocaleString()} pts
+                  </div>
+                </div>
+              </div>
+
+              <div className="player-stats">
+                <div className="player-progress">
+                  <div className="progress-mini">
+                    <div
+                      className="progress-mini-fill"
+                      style={{
+                        width: `${Math.min(
+                          ((player.scores ?? player.score ?? player.points ?? 0) / jackpotTiers[jackpotTiers.length - 1].threshold) * 100,
+                          100
+                        )}%`,
+                        backgroundColor: borderColor,
+                      }}
+                    />
+                  </div>
+                  <div className="progress-text">progresso</div>
+                </div>
+              </div>
+            </div>
           );
         })}
       </div>
 
+      {leaderboardData.length === 0 && (
+        <div className="leaderboard-footer">
+          {status === 'disabled'
+            ? 'Configure VITE_SMARTICO_PROJECT_KEY/VITE_SMARTICO_BRAND_KEY e IDs do torneio no .env para buscar dados reais.'
+            : 'Nenhum dado disponível ainda.'}
+        </div>
+      )}
     
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 /**
  * Hook para gerenciar a API Smartico de forma reativa
@@ -9,6 +9,8 @@ export const useSmartico = () => {
   const [api, setApi] = useState(null);
   const [dp, setDp] = useState(null);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState('loading');
+  const statusRef = useRef('loading');
 
   useEffect(() => {
     // Verifica se já está pronto
@@ -17,6 +19,8 @@ export const useSmartico = () => {
         setApi(window._smartico.api);
         setDp(window._smartico.dp);
         setIsReady(true);
+        setStatus('ready');
+        statusRef.current = 'ready';
         return true;
       }
       return false;
@@ -34,24 +38,53 @@ export const useSmartico = () => {
         setDp(event.detail.dp);
         setIsReady(true);
         setError(null);
+        setStatus('ready');
+        statusRef.current = 'ready';
       } catch (err) {
         setError(err);
+        setStatus('error');
+        statusRef.current = 'error';
       }
+    };
+
+    const handleSmarticoDisabled = () => {
+      setApi(null);
+      setDp(null);
+      setIsReady(false);
+      setError(null);
+      setStatus('disabled');
+      statusRef.current = 'disabled';
+    };
+
+    const handleSmarticoError = (event) => {
+      const message =
+        (event && event.detail && typeof event.detail.error === 'string' && event.detail.error) ||
+        'Erro ao carregar Smartico';
+      setError(new Error(message));
+      setIsReady(false);
+      setStatus('error');
+      statusRef.current = 'error';
     };
 
     // Adiciona o listener
     window.addEventListener('smartico:ready', handleSmarticoReady);
+    window.addEventListener('smartico:disabled', handleSmarticoDisabled);
+    window.addEventListener('smartico:error', handleSmarticoError);
 
     // Timeout de segurança
     const timeout = setTimeout(() => {
-      if (!isReady) {
+      if (!isReady && statusRef.current !== 'disabled') {
         setError(new Error('Timeout: Smartico não carregou em 10 segundos'));
+        setStatus('error');
+        statusRef.current = 'error';
       }
     }, 10000);
 
     // Cleanup
     return () => {
       window.removeEventListener('smartico:ready', handleSmarticoReady);
+      window.removeEventListener('smartico:disabled', handleSmarticoDisabled);
+      window.removeEventListener('smartico:error', handleSmarticoError);
       clearTimeout(timeout);
     };
   }, [isReady]);
@@ -68,7 +101,8 @@ export const useSmartico = () => {
     dp,
     isReady,
     error,
-    identifyUser
+    identifyUser,
+    status
   };
 };
 

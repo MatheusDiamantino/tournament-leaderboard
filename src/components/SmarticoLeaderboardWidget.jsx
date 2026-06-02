@@ -19,15 +19,30 @@ const SmarticoLeaderboardWidget = ({
       return;
     }
 
+    if (typeof window._smartico.showWidget !== 'function') {
+      const errorMsg = 'Smartico SDK não suporta showWidget';
+      setError(errorMsg);
+      setIsLoading(false);
+      if (onError) onError(new Error(errorMsg));
+      return;
+    }
+
+    const container = containerRef.current;
+    if (!container) {
+      const errorMsg = 'Container do widget não está disponível';
+      setError(errorMsg);
+      setIsLoading(false);
+      if (onError) onError(new Error(errorMsg));
+      return;
+    }
+
     const loadWidget = () => {
       try {
         setIsLoading(true);
         setError(null);
 
         // Limpa o container antes de carregar o widget
-        if (containerRef.current) {
-          containerRef.current.innerHTML = '';
-        }
+        container.innerHTML = '';
 
         // Configuração do widget
         const widgetConfig = {
@@ -37,7 +52,7 @@ const SmarticoLeaderboardWidget = ({
           wuuid: `REMOVIDO`,
           id: parseInt(tournamentId),
           instance_id: parseInt(instanceId),
-          container: containerRef.current
+          container
         };
 
         // Carrega o widget usando a função oficial do Smartico
@@ -68,9 +83,7 @@ const SmarticoLeaderboardWidget = ({
 
     // Cleanup quando o componente desmonta
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
+      container.innerHTML = '';
     };
   }, [instanceId, tournamentId, onLoad, onError]);
 

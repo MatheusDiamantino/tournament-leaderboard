@@ -1,7 +1,16 @@
 {
-  "name": "leaderboard-react",
+  "name": "tournament-leaderboard-widget",
+  "description": "Widget de leaderboard de torneio com integração opcional ao Smartico SDK",
+  "keywords": [
+    "smartico",
+    "leaderboard",
+    "tournament",
+    "widget",
+    "react",
+    "vite"
+  ],
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

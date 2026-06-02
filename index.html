@@ -8,52 +8,11 @@
   </head>
   <body>
     <div id="root"></div>
-    
+
+    <a id="smartico-tournaments-link" href="dp:tournaments?id=0" style="display:none"></a>
+    <a id="smartico-missions-link" href="dp:missions?id=0" style="display:none"></a>
+    <a id="smartico-daily-gift-link" href="dp:daily_gift?id=0" style="display:none"></a>
+
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      if (window.location.hostname === "localhost") {
-        window._smartico_allow_localhost = true;
-      }
-
-      // defina o usuário ANTES do init
-      window._smartico_user_id = "REMOVIDO";
-      window._smartico_user_hash = "REMOVIDO";
-      window._smartico_env_info_current = { tournament_id: 556 };
-
-      // Função para identificar usuário (pode ser chamada dinamicamente)
-      window.identifyUser = function(userId, userHash) {
-        window._smartico_user_id = userId;
-        window._smartico_user_hash = userHash;
-        if (window._smartico && window._smartico.identify) {
-          window._smartico.identify({ ext_user_id: userId });
-        }
-      };
-
-      (function (d, r, b, h, s) {
-        h = d.getElementsByTagName("head")[0];
-        s = d.createElement("script");
-        s.onload = b;
-        s.src = r;
-        h.appendChild(s);
-      })(document, "https://libs.smartico.ai/smartico.js", function () {
-        _smartico.init("REMOVIDO", {
-          brand_key: "REMOVIDO",
-          user_id: window._smartico_user_id,
-          user_hash: window._smartico_user_hash,
-        });
-
-        // Emite evento customizado quando Smartico estiver pronto
-        const checkReady = () => {
-          if (window._smartico && window._smartico.api) {
-            window.dispatchEvent(new CustomEvent('smartico:ready', { 
-              detail: { api: window._smartico.api, dp: window._smartico.dp } 
-            }));
-          } else {
-            setTimeout(checkReady, 100);
-          }
-        };
-        checkReady();
-      });
-    </script>
   </body>
 </html>
