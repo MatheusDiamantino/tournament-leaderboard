@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard React - Exemplo com Smartico</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+                'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+                sans-serif;
+            background-color: #f5f5f5;
+        }
+        .integration-info {
+            background: #e3f2fd;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
+        .integration-info h2 {
+            margin-top: 0;
+            color: #1976d2;
+        }
+        .code-block {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="integration-info">
+        <h2>🚀 Projeto React Leaderboard Independente</h2>
+        <p>Este projeto foi criado com sucesso! Para funcionar completamente, você precisa:</p>
+        
+        <h3>1. Incluir o SDK do Smartico</h3>
+        <div class="code-block">
+&lt;script src="https://your-smartico-domain.com/sdk.js"&gt;&lt;/script&gt;
+        </div>
+        
+        <h3>2. Configurar as variáveis</h3>
+        <div class="code-block">
+// No seu HTML ou antes de carregar o React
+window.SMARTICO_CONFIG = {
+    tournamentId: 123,
+    instanceId: "456",
+    apiKey: "sua-api-key"
+};
+        </div>
+        
+        <h3>3. Inicializar o Smartico</h3>
+        <div class="code-block">
+// Após carregar o SDK
+window._smartico.init({
+    // suas configurações
+}).then(() => {
+    // Disparar evento customizado para o React
+    window.dispatchEvent(new CustomEvent('smartico:ready', {
+        detail: {
+            api: window._smartico.api,
+            dp: window._smartico.dp
+        }
+    }));
+});
+        </div>
+        
+        <h3>📁 Estrutura do Projeto</h3>
+        <ul>
+            <li><strong>src/components/Leaderboard.jsx</strong> - Componente principal do leaderboard</li>
+            <li><strong>src/hooks/useSmartico.js</strong> - Hook para gerenciar a API Smartico</li>
+            <li><strong>src/components/SmarticoWidget.jsx</strong> - Componente de fallback para widgets</li>
+            <li><strong>src/App.css</strong> - Estilos completos do leaderboard</li>
+        </ul>
+        
+        <h3>🎯 Funcionalidades Implementadas</h3>
+        <ul>
+            <li>✅ Integração com API Smartico</li>
+            <li>✅ Fallback para widget nativo</li>
+            <li>✅ Destaque do usuário atual</li>
+            <li>✅ Top 3 com cores especiais (ouro, prata, bronze)</li>
+            <li>✅ Avatars com placeholder</li>
+            <li>✅ Design responsivo</li>
+            <li>✅ Tratamento de erros</li>
+        </ul>
+        
+        <h3>🚀 Para Deploy</h3>
+        <p>Execute <code>npm run build</code> e faça upload da pasta <code>dist</code> para seu servidor ou S3.</p>
+    </div>
+
+    
+    <script>
+        console.log('🔧 Modo de desenvolvimento - SDK Smartico simulado');
+        
+        setTimeout(() => {
+            window._smartico = {
+                api: {
+                    getTournamentInstanceInfo: async (instanceId) => {
+                        return {
+                            players: [
+                                {
+                                    position: 1,
+                                    public_username: "jogador_01",
+                                    scores: 152000,
+                                    is_me: false,
+                                    avatar_url: null
+                                },
+                                {
+                                    position: 2,
+                                    public_username: "jogador_02",
+                                    scores: 98500,
+                                    is_me: false,
+                                    avatar_url: null
+                                },
+                                {
+                                    position: 3,
+                                    public_username: "jogador_03",
+                                    scores: 87200,
+                                    is_me: false,
+                                    avatar_url: null
+                                },
+                                {
+                                    position: 4,
+                                    public_username: "jogador_04",
+                                    scores: 64300,
+                                    is_me: true
+                                    avatar_url: null
+                                },
+                                {
+                                    position: 5,
+                                    public_username: "jogador_05",
+                                    scores: 51900,
+                                    is_me: false,
+                                    avatar_url: null
+                                }
+                            ]
+                        };
+                    }
+                },
+                dp: (action) => {
+                    console.log('Smartico DP action:', action);
+                }
+            };
+            
+            window.dispatchEvent(new CustomEvent('smartico:ready', {
+                detail: {
+                    api: window._smartico.api,
+                    dp: window._smartico.dp
+                }
+            }));
+            
+        }, 2000);
+    </script>
+</body>
+</html>
