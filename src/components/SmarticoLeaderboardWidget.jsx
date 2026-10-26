@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { LEADERBOARD_WIDGET_UUID } from '../config/tournament';
 
 const SmarticoLeaderboardWidget = ({ 
   instanceId, 
@@ -47,7 +48,7 @@ const SmarticoLeaderboardWidget = ({
           iframe: `smartico-leaderboard-${Date.now()}`,
           zoom: 1,
           height: 'auto',
-          wuuid: `REMOVIDO`,
+          wuuid: LEADERBOARD_WIDGET_UUID,
           id: parseInt(tournamentId),
           instance_id: parseInt(instanceId),
           container

@@ -36,6 +36,7 @@ npm run dev
 | `VITE_SMARTICO_USER_ID` / `VITE_SMARTICO_USER_HASH` | Usuário identificado no `init` |
 | `VITE_SMARTICO_USE_DEMO_USER` / `VITE_SMARTICO_DEMO_USER_ID` | Usuário de demonstração |
 | `VITE_TOURNAMENT_ID` / `VITE_TOURNAMENT_INSTANCE_ID` | Torneio exibido no leaderboard |
+| `VITE_SMARTICO_LEADERBOARD_WIDGET_UUID` | Identificador do widget de leaderboard na Smartico |
 | `VITE_SMARTICO_DP_TOURNAMENT_ID` / `VITE_SMARTICO_DP_MISSIONS_ID` / `VITE_SMARTICO_DP_DAILY_GIFT_ID` | IDs dos deep links |
 
 Sem as chaves, o app mostra o layout com o aviso "Smartico não configurado". O arquivo `public/smartico-example.html` traz um SDK simulado com dados fictícios, útil para testar sem conta na Smartico.
