@@ -10,13 +10,11 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
   const [apiError, setApiError] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Ref para o container de prêmios
   const prizesGridRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Funções para drag to scroll
   const handleMouseDown = (e) => {
     setIsDragging(true);
     setStartX(e.pageX - prizesGridRef.current.offsetLeft);
@@ -42,11 +40,10 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX - prizesGridRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5; // Velocidade mais suave
+    const walk = (x - startX) * 1.5;
     prizesGridRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // Sistema de Prêmios - 5 metas principais baseadas no totalPoints
   const jackpotTiers = [
     { threshold: 1500000, prize: "Prêmio Prata", color: "#C0C0C0", emoji: "🥈" },
     { threshold: 3000000, prize: "Prêmio Ouro", color: "#FFD700", emoji: "🥇" },
@@ -55,7 +52,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
     { threshold: 20000000, prize: "Prêmio Supremo", color: "#8B0000", emoji: "⚡" },
   ];
 
-  // Função para calcular estatísticas dos prêmios
   const calculateJackpotStats = () => {
     if (!leaderboardData.length) return null;
 
@@ -67,7 +63,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
     const averageScore = Math.round(totalScore / totalPlayers);
     const topScore = leaderboardData[0]?.scores || 0;
 
-    // Encontrar próximo prêmio baseado no total score
     const nextTier = jackpotTiers.find((tier) => totalScore < tier.threshold);
     const currentTier = jackpotTiers
       .slice()
@@ -93,29 +88,24 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
       try {
         setApiError(null);
         
-        // Declarar variável para armazenar todos os jogadores
         let allPlayers = [];
         
-        // Buscar leaderboard com limite de 20 jogadores
         if (api && api.api && api.api.label_api_key) {
           try {
             const apiKey = api.api.label_api_key;
             const publicUrl = api.api.publicUrl.trim();
             
-            // Formatos mais comuns para "label"
             const labelFormats = [
               `label=${apiKey}`,
               `label_key=${apiKey}`,
               `api_key=${apiKey}&label=${apiKey}`
             ];
             
-            // Endpoints principais centralizados
             const endpoints = LEADERBOARD_ENDPOINTS;
             
             for (const endpoint of endpoints) {
               for (const labelFormat of labelFormats) {
                 try {
-                  // URL simples com limite de 20
                   const finalUrl = `${publicUrl}${endpoint}?${labelFormat}&limit=20`;
                   
                   const response = await fetch(finalUrl, {
@@ -128,7 +118,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                   if (response.ok) {
                     const data = await response.json();
                     
-                    // Extrair jogadores
                     let players = [];
                     if (Array.isArray(data)) {
                       players = data;
@@ -143,7 +132,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                     }
                     
                     if (players.length > 0) {
-                      // Limitar a 20 jogadores
                       allPlayers = players.slice(0, 20);
                       setLeaderboardData(allPlayers);
                       setApiError(null);
@@ -151,16 +139,13 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                     }
                   }
                 } catch {
-                  // API não disponível
                 }
               }
             }
           } catch {
-            // API não disponível
           }
         }
         
-        // API oficial do Smartico SDK
         if (window._smartico?.api) {
           try {
             const result = await window._smartico.api.getTournamentInstanceInfo(String(instanceId));
@@ -176,7 +161,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
               }
               
               if (players.length > 0) {
-                // Limitar a 20 jogadores
                 const limitedPlayers = players.slice(0, 20);
                 setLeaderboardData(limitedPlayers);
                 setApiError(null);
@@ -184,11 +168,9 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
               }
             }
           } catch {
-            // API não disponível
           }
         }
         
-        // Widget como fallback
         setUseWidget(true);
         
       } catch (error) {
@@ -199,19 +181,15 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
       }
     };
 
-    // Busca inicial
     fetchLeaderboardData();
 
-    // Atualização em tempo real a cada 5 segundos
     const interval = setInterval(() => {
       fetchLeaderboardData();
     }, 5000);
 
-    // Cleanup do interval
     return () => clearInterval(interval);
   }, [isReady, api, instanceId]);
 
-  // Se deve usar o widget (API falhou ou não disponível)
   if (useWidget && status !== 'disabled') {
     return (
       <div className="leaderboard-container">
@@ -241,18 +219,17 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
     );
   }
 
-  // Função para determinar o tema baseado na pontuação total
   const getThemeLevel = () => {
     if (!jackpotStats) return 0;
 
     const score = jackpotStats.totalScore;
-    if (score >= 50000) return 6; // Nível máximo
+    if (score >= 50000) return 6;
     if (score >= 25000) return 5;
     if (score >= 10000) return 4;
     if (score >= 5000) return 3;
     if (score >= 2000) return 2;
     if (score >= 1000) return 1;
-    return 0; // Nível inicial
+    return 0;
   };
 
   const themeLevel = getThemeLevel();
@@ -261,18 +238,15 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
   return (
     <div className={`leaderboard-container theme-level-${themeLevel}`}>
       <div className="tournament-header">
-        <h1>🎰 JACKPOT REALS 🎰</h1>
+        <h1>🎰 JACKPOT 🎰</h1>
         {status === 'disabled' && <p>Smartico não configurado (.env)</p>}
         {status === 'error' && <p>Smartico com erro: {error?.message || 'erro desconhecido'}</p>}
         {isLoading && status !== 'disabled' && <p>Carregando dados...</p>}
       </div>
 
-      {/* Estatísticas dos Prêmios */}
       {jackpotStats && (
         <div className="jackpot-stats">
-          {/* Layout Horizontal: Pontos Totais + Progresso */}
           <div className="stats-horizontal-layout">
-            {/* Pontos Totais */}
             <div className="total-points-section">
               <div className="points-display">
                 <div className="points-value">
@@ -282,7 +256,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
               </div>
             </div>
 
-            {/* Próximo Prêmio */}
             {jackpotStats.nextTier && (
               <div className="next-prize-section">
                 <div className="prize-info">
@@ -320,7 +293,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
         </div>
       )}
 
-      {/* Todos os Prêmios e Metas */}
       {jackpotStats && (
         <div className="all-prizes-section">
           <h3 className="prizes-title">🏆 Todos os Prêmios e Metas</h3>
@@ -360,7 +332,6 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
                     </div>
                   </div>
                   
-                  {/* Conector entre prêmios */}
                   {index < jackpotTiers.length - 1 && (
                     <div className={`prize-connector ${isCompleted ? 'completed' : 'locked'}`}>
                       <div className="connector-line"></div>
@@ -374,18 +345,16 @@ const Leaderboard = ({ tournamentId = TOURNAMENT_ID, instanceId = String(TOURNAM
         </div>
       )}
 
-      {/* Lista de Jogadores */}
       <div className="leaderboard-list">
         {leaderboardData.map((player, index) => {
           const isCurrentUser = player.is_me === true;
           const position = index + 1;
           
-          // Determinar cor da borda baseada na posição
-          let borderColor = "#4B5563"; // Cor padrão
-          if (position === 1) borderColor = "#FFD700"; // Ouro
-          else if (position === 2) borderColor = "#C0C0C0"; // Prata
-          else if (position === 3) borderColor = "#CD7F32"; // Bronze
-          else if (position <= 10) borderColor = "#8B5CF6"; // Top 10
+          let borderColor = "#4B5563";
+          if (position === 1) borderColor = "#FFD700";
+          else if (position === 2) borderColor = "#C0C0C0";
+          else if (position === 3) borderColor = "#CD7F32";
+          else if (position <= 10) borderColor = "#8B5CF6";
 
           return (
             <div

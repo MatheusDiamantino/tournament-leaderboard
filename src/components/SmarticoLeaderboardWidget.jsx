@@ -41,10 +41,8 @@ const SmarticoLeaderboardWidget = ({
         setIsLoading(true);
         setError(null);
 
-        // Limpa o container antes de carregar o widget
         container.innerHTML = '';
 
-        // Configuração do widget
         const widgetConfig = {
           iframe: `smartico-leaderboard-${Date.now()}`,
           zoom: 1,
@@ -55,7 +53,6 @@ const SmarticoLeaderboardWidget = ({
           container
         };
 
-        // Carrega o widget usando a função oficial do Smartico
         window._smartico.showWidget(
           'leaderboard',
           widgetConfig,
@@ -78,10 +75,8 @@ const SmarticoLeaderboardWidget = ({
       }
     };
 
-    // Carrega o widget quando o componente monta
     loadWidget();
 
-    // Cleanup quando o componente desmonta
     return () => {
       container.innerHTML = '';
     };

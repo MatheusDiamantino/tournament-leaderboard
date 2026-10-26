@@ -1,69 +1,58 @@
-# Tournament Leaderboard Widget (React + Vite)
+# Tournament Leaderboard
 
-Widget de leaderboard de torneio com integração opcional ao Smartico SDK.
+Leaderboard de torneio no estilo jackpot coletivo, feito em React e Vite: mostra o ranking dos jogadores, a soma de pontos da comunidade e o progresso até cada meta de prêmio.
+
+Desenvolvido profissionalmente para a **UX Group**, empresa dona das marcas de apostas **Reals, Bingo e BetGo**. É um widget de gamificação integrado à plataforma **Smartico**. Este repositório é uma versão sem as marcas: chaves, IDs de torneio e identidade visual das marcas foram trocados por variáveis de ambiente e um tema genérico.
+
+## Funcionalidades
+
+- **Ranking dos 20 primeiros** de um torneio da Smartico, buscado na API pública com a `label_api_key` do SDK, com `getTournamentInstanceInfo()` como segunda opção
+- **Widget nativo de reserva** (`showWidget`) quando a API não devolve dados
+- **Jackpot coletivo**: soma os pontos de todos os jogadores e mostra o progresso até a próxima de 5 metas (Prata, Ouro, Diamante, Lendário, Supremo)
+- **Carrossel de metas** com rolagem por arraste e indicação de concluída, atual e próxima
+- **Cards de jogador** com medalhas para o top 3, destaque "Você" para o usuário logado e barra de progresso individual
+- **Bootstrap da Smartico** pelo `.env`: carrega o SDK, identifica o usuário (ou um usuário demo) e avisa o React por eventos `smartico:ready`, `smartico:error` e `smartico:disabled`
+- **Deep links `dp:`** em links ocultos para torneios, missões e presente diário
+- **Moldura de celular** e layout pensado primeiro para mobile
+
+## Stack
+
+- React 19
+- Vite 7 com `@vitejs/plugin-react`
+- CSS puro com variáveis de tema
+- ESLint 9
 
 ## Como rodar
 
 ```bash
 npm install
+cp .env.example .env
 npm run dev
 ```
 
-## Build
+| Variável | Uso |
+| --- | --- |
+| `VITE_SMARTICO_PROJECT_KEY` / `VITE_SMARTICO_BRAND_KEY` | Ligam a integração com a Smartico |
+| `VITE_SMARTICO_USER_ID` / `VITE_SMARTICO_USER_HASH` | Usuário identificado no `init` |
+| `VITE_SMARTICO_USE_DEMO_USER` / `VITE_SMARTICO_DEMO_USER_ID` | Usuário de demonstração |
+| `VITE_TOURNAMENT_ID` / `VITE_TOURNAMENT_INSTANCE_ID` | Torneio exibido no leaderboard |
+| `VITE_SMARTICO_DP_TOURNAMENT_ID` / `VITE_SMARTICO_DP_MISSIONS_ID` / `VITE_SMARTICO_DP_DAILY_GIFT_ID` | IDs dos deep links |
+
+Sem as chaves, o app mostra o layout com o aviso "Smartico não configurado". O arquivo `public/smartico-example.html` traz um SDK simulado com dados fictícios, útil para testar sem conta na Smartico.
+
+Build de produção:
 
 ```bash
-npm run lint
 npm run build
 ```
 
-## Variáveis de ambiente
-
-Copie `.env.example` para `.env` e preencha os valores necessários.
-
-Obrigatórias para carregar o Smartico SDK:
-
-- `VITE_SMARTICO_PROJECT_KEY`
-- `VITE_SMARTICO_BRAND_KEY`
-
-Opcional (identificação de usuário):
-
-- `VITE_SMARTICO_USER_ID`
-- `VITE_SMARTICO_USER_HASH`
-- `VITE_SMARTICO_USE_DEMO_USER` (`true`/`false`)
-- `VITE_SMARTICO_DEMO_USER_ID`
-
-IDs do torneio:
-
-- `VITE_TOURNAMENT_ID`
-- `VITE_TOURNAMENT_INSTANCE_ID`
-
-Deep links (atualizados em runtime):
-
-- `VITE_SMARTICO_DP_TOURNAMENT_ID`
-- `VITE_SMARTICO_DP_MISSIONS_ID`
-- `VITE_SMARTICO_DP_DAILY_GIFT_ID`
-
-## Como funciona (Smartico)
-
-- O HTML não contém credenciais.
-- O bootstrap fica em `src/main.jsx` e carrega `https://libs.smartico.ai/smartico.js` somente quando as envs obrigatórias estão configuradas.
-- Quando o Smartico fica pronto, o app emite `smartico:ready` (consumido pelo hook `src/hooks/useSmartico.js`).
-- Se não houver env configurada, o app emite `smartico:disabled` e o layout continua renderizando normalmente.
-
-## Deep links
-
-No `index.html` existem anchors “neutros” (com `id=0`) e invisíveis:
-
-- `#smartico-tournaments-link`
-- `#smartico-missions-link`
-- `#smartico-daily-gift-link`
-
-Em runtime, `src/main.jsx` atualiza o `href` desses anchors com os IDs vindos do `.env`.
-
 ## Estrutura
 
-- `index.html`: shell do Vite (sem credenciais)
-- `src/main.jsx`: bootstrap do Smartico + render do React
-- `src/hooks/useSmartico.js`: estado reativo do Smartico (`ready/disabled/error`)
-- `src/config/tournament.js`: IDs do torneio via env
-- `src/components/Leaderboard.jsx`: UI do leaderboard e fallback
+```
+src/main.jsx                               bootstrap da Smartico e deep links
+src/hooks/useSmartico.js                   estado do SDK (loading, ready, error, disabled)
+src/components/Leaderboard.jsx             ranking, jackpot e carrossel de metas
+src/components/SmarticoLeaderboardWidget.jsx  widget nativo de reserva
+src/components/SmarticoWidget.jsx          wrappers de widgets da Smartico
+src/config/                                IDs de torneio e campanha
+```

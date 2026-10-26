@@ -1,9 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-/**
- * Hook para gerenciar a API Smartico de forma reativa
- * @returns {Object} { api, dp, isReady, error, identifyUser }
- */
 export const useSmartico = () => {
   const [isReady, setIsReady] = useState(false);
   const [api, setApi] = useState(null);
@@ -13,7 +9,6 @@ export const useSmartico = () => {
   const statusRef = useRef('loading');
 
   useEffect(() => {
-    // Verifica se já está pronto
     const checkInitialState = () => {
       if (window._smartico && window._smartico.api) {
         setApi(window._smartico.api);
@@ -26,12 +21,10 @@ export const useSmartico = () => {
       return false;
     };
 
-    // Se já estiver pronto, não precisa esperar o evento
     if (checkInitialState()) {
       return;
     }
 
-    // Listener para o evento customizado
     const handleSmarticoReady = (event) => {
       try {
         setApi(event.detail.api);
@@ -66,12 +59,10 @@ export const useSmartico = () => {
       statusRef.current = 'error';
     };
 
-    // Adiciona o listener
     window.addEventListener('smartico:ready', handleSmarticoReady);
     window.addEventListener('smartico:disabled', handleSmarticoDisabled);
     window.addEventListener('smartico:error', handleSmarticoError);
 
-    // Timeout de segurança
     const timeout = setTimeout(() => {
       if (!isReady && statusRef.current !== 'disabled') {
         setError(new Error('Timeout: Smartico não carregou em 10 segundos'));
@@ -80,7 +71,6 @@ export const useSmartico = () => {
       }
     }, 10000);
 
-    // Cleanup
     return () => {
       window.removeEventListener('smartico:ready', handleSmarticoReady);
       window.removeEventListener('smartico:disabled', handleSmarticoDisabled);
@@ -89,7 +79,6 @@ export const useSmartico = () => {
     };
   }, [isReady]);
 
-  // Função para identificar usuário dinamicamente
   const identifyUser = useCallback((userId, userHash) => {
     if (window.identifyUser) {
       window.identifyUser(userId, userHash);

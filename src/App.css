@@ -1,14 +1,12 @@
-/* Jackpot Leaderboard Styles - With subtle animations */
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap");
 
-/* Reals Theme - Purple and Black */
 :root {
-  --reals-purple: #8b5cf6;
-  --reals-dark-purple: #6d28d9;
-  --reals-light-purple: #a78bfa;
-  --reals-black: #000000;
-  --reals-dark-gray: #1f1f1f;
-  --reals-gray: #374151;
+  --base-purple: #8b5cf6;
+  --base-dark-purple: #6d28d9;
+  --base-light-purple: #a78bfa;
+  --base-black: #000000;
+  --base-dark-gray: #1f1f1f;
+  --base-gray: #374151;
 }
 
 .phone-frame {
@@ -22,7 +20,7 @@
 .phone-frame__content {
   width: min(420px, 100%);
   height: 100vh;
-  background: var(--reals-black);
+  background: var(--base-black);
   overflow: auto;
 }
 
@@ -40,7 +38,6 @@
   }
 }
 
-/* Theme Level Styles - Dynamic colors based on score */
 .theme-level-0 {
   --theme-primary: #6b7280;
   --theme-secondary: #4b5563;
@@ -90,7 +87,6 @@
   --theme-glow: rgba(75, 0, 130, 0.4);
 }
 
-/* Keyframes para animações sutis */
 @keyframes borderGlow {
   0% {
     opacity: 0.5;
@@ -186,7 +182,6 @@
   }
 }
 
-/* Animações específicas por tema */
 @keyframes goldGlow {
   0%,
   100% {
@@ -256,14 +251,14 @@
   padding: 30px;
   background: linear-gradient(
     135deg,
-    var(--reals-black) 0%,
-    var(--reals-dark-gray) 100%
+    var(--base-black) 0%,
+    var(--base-dark-gray) 100%
   );
   border-radius: 20px;
   box-shadow: 0 20px 40px var(--theme-glow, rgba(139, 92, 246, 0.3));
   position: relative;
   overflow: hidden;
-  border: 2px solid var(--theme-primary, var(--reals-purple));
+  border: 2px solid var(--theme-primary, var(--base-purple));
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -353,7 +348,6 @@
   letter-spacing: 1px;
 }
 
-/* Total Score Section */
 .total-score-section {
   margin: 30px 0;
   display: flex;
@@ -367,10 +361,10 @@
 .score-display {
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
-  border: 3px solid var(--reals-purple);
+  border: 3px solid var(--base-purple);
   border-radius: 20px;
   padding: 40px 60px;
   text-align: center;
@@ -397,7 +391,7 @@
 
 .score-label {
   font-size: 16px;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-family: "Orbitron", monospace;
   font-weight: 700;
   margin-bottom: 15px;
@@ -414,7 +408,6 @@
   animation: scoreGlow 2s ease-in-out infinite alternate;
 }
 
-/* Progress Section */
 .progress-section {
   width: 100%;
   max-width: 500px;
@@ -459,7 +452,7 @@
 .current-goal {
   font-size: 14px;
   font-weight: 700;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-family: "Orbitron", monospace;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -546,7 +539,6 @@
   opacity: 0.8;
 }
 
-/* Jackpot Tiers Section */
 .jackpot-tiers-section {
   margin-bottom: 30px;
   z-index: 1;
@@ -555,7 +547,7 @@
 
 .jackpot-tiers-section h3 {
   margin-bottom: 20px;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-size: 24px;
   font-family: "Orbitron", monospace;
   font-weight: 700;
@@ -573,8 +565,8 @@
 .jackpot-tier {
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
   border: 3px solid rgba(139, 92, 246, 0.3);
   border-radius: 15px;
@@ -593,11 +585,11 @@
 .jackpot-tier.unlocked {
   background: linear-gradient(
     135deg,
-    var(--reals-purple) 0%,
-    var(--reals-dark-purple) 100%
+    var(--base-purple) 0%,
+    var(--base-dark-purple) 100%
   );
   color: #ffffff;
-  border-color: var(--reals-light-purple);
+  border-color: var(--base-light-purple);
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
 }
 
@@ -616,7 +608,7 @@
   font-size: 18px;
   font-weight: 900;
   font-family: "Orbitron", monospace;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   margin-bottom: 5px;
 }
 
@@ -672,12 +664,11 @@
   top: -20px;
   right: 0;
   font-size: 10px;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-weight: 700;
   font-family: "Orbitron", monospace;
 }
 
-/* Jackpot Stats Section */
 .jackpot-stats {
   margin-bottom: 30px;
   z-index: 1;
@@ -697,7 +688,6 @@
   box-sizing: border-box;
 }
 
-/* Layout Horizontal */
 .stats-horizontal-layout {
   display: flex;
   gap: 30px;
@@ -707,7 +697,6 @@
   box-sizing: border-box;
 }
 
-/* Seção de Pontos Totais */
 .total-points-section {
   flex: 0 0 auto;
   min-width: 250px;
@@ -766,7 +755,6 @@
   opacity: 0.9;
 }
 
-/* Seção do Próximo Prêmio */
 .next-prize-section {
   flex: 1;
   min-width: 300px;
@@ -858,7 +846,6 @@
   text-shadow: 0 0 8px rgba(255, 99, 71, 0.3);
 }
 
-/* Animações Otimizadas */
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -886,7 +873,6 @@
   }
 }
 
-/* Responsividade Melhorada */
 @media (max-width: 1024px) {
   .jackpot-stats {
     padding: 25px;
@@ -965,7 +951,6 @@
   }
 }
 
-/* Otimizações de Performance */
 @media (prefers-reduced-motion: reduce) {
   .points-display::before,
   .progress-bar-fill::after {
@@ -981,7 +966,6 @@
   }
 }
 
-/* Leaderboard List */
 .leaderboard-list {
   display: flex;
   flex-direction: column;
@@ -992,8 +976,8 @@
 .player-card {
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
   border-radius: 15px;
   padding: 20px;
@@ -1011,7 +995,7 @@
 }
 
 .player-card.current-user {
-  border: 2px solid var(--reals-purple);
+  border: 2px solid var(--base-purple);
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
 }
 
@@ -1050,7 +1034,7 @@
 }
 
 .you-badge {
-  background: var(--reals-purple);
+  background: var(--base-purple);
   color: #ffffff;
   padding: 4px 8px;
   border-radius: 12px;
@@ -1069,7 +1053,7 @@
 .player-score {
   font-size: 16px;
   font-weight: 700;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-family: "Orbitron", monospace;
 }
 
@@ -1110,7 +1094,6 @@
   text-align: right;
 }
 
-/* Leaderboard Footer */
 .leaderboard-footer {
   text-align: center;
   padding: 20px;
@@ -1125,7 +1108,6 @@
   font-family: "Orbitron", monospace;
 }
 
-/* Locked tier styles - elementos não alcançados em cinza */
 .jackpot-tier.locked {
   background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%) !important;
   border-color: #666666 !important;
@@ -1155,7 +1137,6 @@
   opacity: 0.7;
 }
 
-/* Efeitos especiais para o score display baseado no nível */
 .theme-level-1 .score-display {
   border-color: var(--theme-primary);
   box-shadow: 0 15px 35px var(--theme-glow);
@@ -1186,15 +1167,14 @@
   box-shadow: 0 15px 35px var(--theme-glow);
 }
 
-/* Todos os Prêmios - Seção Completa */
 .all-prizes-section {
   margin: 30px 0;
-  padding: 25px 5px; /* Padding ainda menor nas laterais */
+  padding: 25px 5px;
   background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
   border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 20px;
   position: relative;
-  overflow: visible; /* Mudando para visible */
+  overflow: visible;
   max-width: 1400px;
   margin: 30px auto;
 }
@@ -1227,30 +1207,27 @@
   z-index: 1;
 }
 
-/* Battle Pass Style Layout */
 .prizes-grid {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 20px; /* Gap maior para melhor espaçamento */
+  gap: 20px;
   position: relative;
   z-index: 1;
-  width: 100%; /* Largura normal para 5 prêmios */
+  width: 100%;
   margin: 0 auto;
-  padding: 20px 80px 20px 20px; /* Padding otimizado para 5 prêmios */
+  padding: 20px 80px 20px 20px;
   overflow-x: auto;
   overflow-y: visible;
   cursor: grab;
-  /* Ocultar scrollbar */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  /* Scroll suave */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
 }
 
 .prizes-grid::-webkit-scrollbar {
-  display: none; /* WebKit */
+  display: none;
 }
 
 .prizes-grid:active {
@@ -1262,7 +1239,6 @@
   user-select: none;
 }
 
-/* Conectores entre prêmios */
 .prize-connector {
   display: flex;
   align-items: center;
@@ -1299,7 +1275,6 @@
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
 }
 
-/* Remover o conector de fundo global */
 .prizes-grid::before {
   display: none;
 }
@@ -1318,7 +1293,7 @@
   position: relative;
   min-width: 140px;
   max-width: 160px;
-  flex-shrink: 0; /* Importante: impede que os cards encolham */
+  flex-shrink: 0;
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   z-index: 2;
@@ -1487,7 +1462,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Animações */
 @keyframes pulse-current {
   0%,
   100% {
@@ -1508,7 +1482,6 @@
   }
 }
 
-/* Animações aprimoradas para o cabeçalho e seções superiores */
 @keyframes celebrationBounce {
   0%,
   20%,
@@ -1603,7 +1576,6 @@
   }
 }
 
-/* Responsive Design para Prêmios */
 @media (max-width: 1024px) {
   .prizes-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1651,7 +1623,6 @@
   }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .jackpot-tiers-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -1821,7 +1792,7 @@
 
 .user-score-section h3 {
   margin-bottom: 20px;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-size: 24px;
   font-family: "Orbitron", monospace;
   font-weight: 700;
@@ -1832,8 +1803,8 @@
 .user-score-card {
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
   border: 3px solid rgba(139, 92, 246, 0.3);
   border-radius: 15px;
@@ -1846,7 +1817,7 @@
 .user-score-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
-  border-color: var(--reals-light-purple);
+  border-color: var(--base-light-purple);
 }
 
 .user-score-card::before {
@@ -1868,7 +1839,7 @@
 .user-score-card .score-value {
   font-size: 36px;
   font-weight: 900;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-family: "Orbitron", monospace;
   margin-bottom: 10px;
   text-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
@@ -1927,12 +1898,12 @@
 .no-score {
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
   padding: 40px;
   text-align: center;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   border-radius: 15px;
   border: 2px solid rgba(139, 92, 246, 0.3);
   font-family: "Orbitron", monospace;
@@ -1945,8 +1916,8 @@
   padding: 25px;
   background: linear-gradient(
     135deg,
-    var(--reals-dark-gray) 0%,
-    var(--reals-black) 100%
+    var(--base-dark-gray) 0%,
+    var(--base-black) 100%
   );
   border-radius: 15px;
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.2), 0 8px 25px rgba(0, 0, 0, 0.4);
@@ -1957,7 +1928,7 @@
 .leaderboard-error {
   text-align: center;
   padding: 40px;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   font-family: "Orbitron", monospace;
   font-weight: 600;
   font-size: 18px;
@@ -1968,7 +1939,6 @@
   color: #ff6347;
 }
 
-/* Global styles */
 body {
   margin: 0;
   padding: 0;
@@ -1979,7 +1949,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
   min-height: 100vh;
-  color: var(--reals-light-purple);
+  color: var(--base-light-purple);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2009,7 +1979,6 @@ code {
     margin: 0;
   }
 
-  /* 🎯 MELHORIAS MOBILE - SEÇÃO DE PRÊMIOS */
   .all-prizes-section {
     margin: 20px 0;
     padding: 20px 10px;
@@ -2021,17 +1990,14 @@ code {
     margin-bottom: 20px;
   }
 
-  /* 📱 SCROLL HORIZONTAL OTIMIZADO PARA MOBILE */
   .prizes-grid {
     padding: 15px 20px 15px 15px;
     gap: 15px;
-    /* Scroll mais suave no mobile */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     position: relative;
   }
 
-  /* 🎯 INDICADORES DE SCROLL TOUCH-FRIENDLY */
   .prizes-grid::after {
     content: "👈 Deslize para ver mais prêmios";
     position: absolute;
@@ -2055,7 +2021,6 @@ code {
     50% { opacity: 1; transform: translateY(-50%) translateX(-5px); }
   }
 
-  /* 🎯 FADE GRADIENT PARA INDICAR MAIS CONTEÚDO */
   .prizes-grid::before {
     content: "";
     position: absolute;
@@ -2068,18 +2033,14 @@ code {
     z-index: 5;
   }
 
-  /* 🎴 CARDS MAIORES E MAIS TOUCH-FRIENDLY */
   .prize-card {
     min-width: 140px !important;
     width: 140px !important;
     height: 160px !important;
     padding: 15px 12px !important;
     border-radius: 12px !important;
-    /* Snap para cada card */
     scroll-snap-align: start;
-    /* Melhor feedback visual */
     transition: all 0.2s ease;
-    /* Área de toque maior */
     position: relative;
     cursor: pointer;
   }
@@ -2089,7 +2050,6 @@ code {
     opacity: 0.8;
   }
 
-  /* 🎯 MELHOR ÁREA DE TOQUE */
   .prize-card::before {
     content: "";
     position: absolute;
@@ -2101,7 +2061,6 @@ code {
     pointer-events: auto;
   }
 
-  /* 🎭 EMOJIS E TEXTOS MAIORES */
   .prize-emoji {
     font-size: 32px !important;
     margin-bottom: 8px !important;
@@ -2125,7 +2084,6 @@ code {
     opacity: 0.9;
   }
 
-  /* 🏆 MELHOR VISUAL PARA PRÊMIOS CONQUISTADOS */
   .prize-card.completed {
     box-shadow: 0 0 20px rgba(255, 215, 0, 0.4) !important;
     border-width: 2px !important;
@@ -2141,13 +2099,11 @@ code {
     50% { box-shadow: 0 0 35px rgba(0, 255, 127, 0.7); }
   }
 
-  /* 🔗 CONECTORES MENORES NO MOBILE */
   .connector-line {
     width: 20px !important;
     height: 2px !important;
   }
 
-  /* ✅ STATUS VISUAL MELHORADO */
   .prize-status {
     font-size: 10px !important;
     padding: 3px 6px !important;
@@ -2155,15 +2111,12 @@ code {
   }
 }
 
-/* Desktop scale adjustments */
 :root {
-  /* Proporção reduzida para desktop */
   --desktop-scale: 0.6;
 }
 
 @media (min-width: 1024px) {
   .leaderboard-container {
-    /* Reduce overall scale on desktop */
     zoom: var(--desktop-scale);
     transform: scale(var(--desktop-scale));
     transform-origin: top center;
@@ -2173,7 +2126,6 @@ code {
     padding: 20px;
   }
 
-  /* Tighter paddings and font sizes for desktop */
   .tournament-header {
     padding: 12px 0;
   }
@@ -2223,7 +2175,6 @@ code {
   }
 }
 
-/* Proporção fixa para cenário 904x1064 */
 @media screen and (min-width: 900px) {
   .leaderboard-container {
     zoom: 1;

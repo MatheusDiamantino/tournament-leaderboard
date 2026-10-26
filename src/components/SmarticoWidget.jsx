@@ -1,10 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSmartico } from '../hooks/useSmartico';
 
-/**
- * Componente genérico para renderizar widgets Smartico via embed
- * Usado como fallback quando a API não está disponível
- */
 const SmarticoWidget = ({ 
   app, 
   instanceId, 
@@ -21,7 +17,6 @@ const SmarticoWidget = ({
   useEffect(() => {
     if (!widgetRef.current) return;
 
-    // Configura atributos do widget
     const widget = widgetRef.current;
     
     if (app) {
@@ -36,11 +31,9 @@ const SmarticoWidget = ({
       widget.setAttribute('data-tournament-id', tournamentId);
     }
 
-    // Observa mudanças no widget para detectar carregamento
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-          // Widget foi carregado
           if (onLoad) {
             onLoad();
           }
@@ -50,7 +43,6 @@ const SmarticoWidget = ({
 
     observer.observe(widget, { childList: true, subtree: true });
 
-    // Timeout para detectar erro de carregamento
     const errorTimeout = setTimeout(() => {
       if (widget.children.length === 0) {
         if (onError) {
@@ -81,9 +73,6 @@ const SmarticoWidget = ({
   );
 };
 
-/**
- * Widget específico para Missões
- */
 export const MissionsWidget = ({ className, style, onLoad, onError }) => (
   <SmarticoWidget
     app="missions"
@@ -94,9 +83,6 @@ export const MissionsWidget = ({ className, style, onLoad, onError }) => (
   />
 );
 
-/**
- * Widget específico para Lista de Torneios
- */
 export const TournamentsListWidget = ({ className, style, onLoad, onError }) => (
   <SmarticoWidget
     app="tournaments"
@@ -107,9 +93,6 @@ export const TournamentsListWidget = ({ className, style, onLoad, onError }) => 
   />
 );
 
-/**
- * Widget específico para Torneio individual (com leaderboard)
- */
 export const TournamentWidget = ({ instanceId, className, style, onLoad, onError }) => (
   <SmarticoWidget
     app="tournament"
@@ -121,9 +104,6 @@ export const TournamentWidget = ({ instanceId, className, style, onLoad, onError
   />
 );
 
-/**
- * Widget específico para Leaderboard
- */
 export const LeaderboardWidget = ({ instanceId, className, style, onLoad, onError }) => (
   <SmarticoWidget
     app="leaderboard"
@@ -135,9 +115,6 @@ export const LeaderboardWidget = ({ instanceId, className, style, onLoad, onErro
   />
 );
 
-/**
- * Componente que automaticamente escolhe entre API e Widget embed
- */
 export const SmarticoFallback = ({ 
   children, 
   fallbackWidget, 
@@ -146,12 +123,10 @@ export const SmarticoFallback = ({
 }) => {
   const { isReady, error } = useSmartico();
 
-  // Mostra loading se fornecido
   if (!isReady && loadingComponent) {
     return loadingComponent;
   }
 
-  // Se há erro e fallback está habilitado, mostra widget embed
   if (error && showFallback && fallbackWidget) {
     return (
       <div className="smartico-fallback-container">
@@ -160,7 +135,6 @@ export const SmarticoFallback = ({
     );
   }
 
-  // Caso contrário, renderiza os children (componentes que usam API)
   return children;
 };
 
